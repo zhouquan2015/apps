@@ -25,8 +25,7 @@ import com.day.cq.polling.importer.Importer;
 
 @Service(value = Importer.class)
 @Component
-@Property(name = Importer.SCHEME_PROPERTY, value = "stock",
-propertyPrivate = true)
+@Property(name = Importer.SCHEME_PROPERTY, value = "stock", propertyPrivate = true)
 public class StockDataImporter implements Importer {
 	private final String SOURCE_URL =
 			"http://finance.yahoo.com/d/quotes.csv?f=snd1l1yr&s=";
@@ -39,12 +38,9 @@ public class StockDataImporter implements Importer {
 					Node parent = resource.adaptTo(Node.class);
 					Node stockPageNode = JcrUtil.createPath(parent.getPath()
 					+ "/" + stockSymbol, "cq:Page", parent.getSession());
-					Node lastTradeNode = JcrUtil.createPath (stockPageNode.
-					getPath()
-					+ "/lastTrade", "nt:unstructured", parent.getSession());
+					Node lastTradeNode = JcrUtil.createPath (stockPageNode.getPath() + "/lastTrade", "nt:unstructured", parent.getSession());
 					lastTradeNode.setProperty("lastTrade", lastTrade);
-					lastTradeNode.setProperty("lastUpdate", Calendar.
-					getInstance());
+					lastTradeNode.setProperty("lastUpdate", Calendar.getInstance());
 					parent.getSession().save();
 			}
 			
@@ -54,14 +50,12 @@ public class StockDataImporter implements Importer {
 				try {
 					// dataSource will be interpreted as stock symbol
 					URL sourceUrl = new URL(SOURCE_URL + dataSource);
-					BufferedReader in = new BufferedReader
-					(new InputStreamReader(sourceUrl.openStream()));
+					LOGGER.info("scheme: {0}", scheme);
+					BufferedReader in = new BufferedReader(new InputStreamReader(sourceUrl.openStream()));
 					String readLine = in.readLine();
 					// expecting only one line
-					String lastTrade = Arrays.asList(Pattern.compile
-					(",").split(readLine)).get(3);
-					LOGGER.info("Last trade for stock {} was {}",
-					dataSource, lastTrade);
+					String lastTrade = Arrays.asList(Pattern.compile(",").split(readLine)).get(3);
+					LOGGER.info("Last trade for stock {} was {}", dataSource, lastTrade);
 					in.close();
 					//persist
 					writeToRepository(dataSource, lastTrade, resource);
