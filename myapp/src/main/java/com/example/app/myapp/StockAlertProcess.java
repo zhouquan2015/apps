@@ -60,7 +60,7 @@ public class StockAlertProcess implements WorkflowProcess {
 			LOGGER.info("found symbol {}", symbol);
 			if (node.hasProperty(PROPERTY_LAST_TRADE)) {
 			Double lastTrade = node.getProperty(PROPERTY_LAST_TRADE).getDouble();
-			LOGGER.info("last trade was {}", lastTrade);
+			LOGGER.info("last trade : {}", lastTrade);
 			// reading the passed arguments
 			Iterator<String> argumentsIterator =
 			Arrays.asList(Pattern.compile("\n").split(args.get("PROCESS_ARGS", ""))).iterator();
